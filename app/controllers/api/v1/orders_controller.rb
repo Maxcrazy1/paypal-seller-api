@@ -1,5 +1,5 @@
 class Api::V1::OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, :set_order, only: [:show, :edit, :update, :destroy]
 
   # GET /order
   # GET /order.json
@@ -29,6 +29,9 @@ class Api::V1::OrdersController < ApplicationController
   # POST /order.json
   def store
     @order = Order.new(order_params)
+    @order.user = current_user
+
+
     @order.order_number = rand(1000000..9999999)
     @order.visible = true
 
@@ -67,6 +70,7 @@ class Api::V1::OrdersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def order_params
+
     params.permit(:price, :operation_type)
   end
 end
