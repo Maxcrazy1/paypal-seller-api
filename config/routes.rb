@@ -16,6 +16,9 @@ post 'orders', to: 'orders#store'
 get 'orders/:id', to: 'orders#show'
 put 'orders/:id', to: 'orders#update'
 delete 'orders/:id', to: 'orders#destroy'
+
+      put   'users/:id',       to: 'user#update'
+
     end
   end
 

@@ -8,12 +8,21 @@ class EmailValidator < ActiveModel::EachValidator
 end
 
 class User < ApplicationRecord
+  rolify :role_cname => 'Admin'
+  rolify :role_cname => 'Customer'
   validates :email, presence: true, email: true
   has_many :orders
+
   include Devise::JWT::RevocationStrategies::JTIMatcher
 
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
+
+  after_create :assign_default_role
+
+  def assign_default_role
+    self.add_role(:customer) if self.roles.blank?
+  end
 end
