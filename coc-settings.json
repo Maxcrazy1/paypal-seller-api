@@ -1,0 +1,8 @@
+{
+  "languageserver": {
+    "Ada": {
+      "command": "path/to/ada_language_server",
+      "filetypes": ["ada"]
+    }
+  }
+}

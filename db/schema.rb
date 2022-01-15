@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_01_182623) do
+ActiveRecord::Schema.define(version: 2022_01_15_231941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,14 @@ ActiveRecord::Schema.define(version: 2021_12_01_182623) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name", "resource_type", "resource_id"], name: "index_admins_on_name_and_resource_type_and_resource_id"
     t.index ["resource_type", "resource_id"], name: "index_admins_on_resource"
+  end
+
+  create_table "bank_accounts", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "customers", force: :cascade do |t|
@@ -43,6 +51,10 @@ ActiveRecord::Schema.define(version: 2021_12_01_182623) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
+    t.float "minimum_price"
+    t.float "minimum_number"
+    t.integer "operation_type_id"
+    t.integer "description_template_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
