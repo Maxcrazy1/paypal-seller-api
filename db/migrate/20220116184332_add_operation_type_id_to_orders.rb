@@ -1,5 +1,5 @@
 class AddOperationTypeIdToOrders < ActiveRecord::Migration[6.1]
   def change
-    add_column :orders, :operation_type_id, :integer, after: :maximum_number
+    add_reference :orders, :operation_type, null: false, foreign_key: true
   end
 end

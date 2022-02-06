@@ -4,8 +4,8 @@ class Api::V1::OrdersController < ApplicationController
   # GET /order
   # GET /order.json
   def index
-    @orders = ["buy"=> Order.where(operation_type:"buy")]
-    @orders = @orders.push( "sold"=> Order.where(operation_type:"sold"))
+    @orders = ['buy' => Order.where(operation_type:'buy')]
+    @orders = @orders.push('sold' => Order.where(operation_type: 'sold'))
 
     render json: @orders
   end
@@ -31,8 +31,9 @@ class Api::V1::OrdersController < ApplicationController
     @order = Order.new(order_params)
 
 
-    @order.order_number = rand(1000000..9999999)
+    @order.order_number = rand(100_000_0..999_999_9)
     @order.visible = true
+    @order.user_id = 1
 
     if @order.save
       render json: @order
@@ -69,7 +70,6 @@ class Api::V1::OrdersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def order_params
-
-    params.permit(:price, :operation_type)
+    params.permit(:price, :minimum_price, :maximum_price, :operation_type_id, :description_template_id)
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_15_231941) do
+ActiveRecord::Schema.define(version: 2022_01_18_113710) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,11 +26,12 @@ ActiveRecord::Schema.define(version: 2022_01_15_231941) do
   end
 
   create_table "bank_accounts", force: :cascade do |t|
-    t.integer "user_id"
     t.string "name"
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_bank_accounts_on_user_id"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -43,18 +44,34 @@ ActiveRecord::Schema.define(version: 2022_01_15_231941) do
     t.index ["resource_type", "resource_id"], name: "index_customers_on_resource"
   end
 
+  create_table "description_templates", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_description_templates_on_user_id"
+  end
+
+  create_table "operation_types", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "orders", force: :cascade do |t|
     t.integer "order_number"
     t.decimal "price"
-    t.string "operation_type"
     t.boolean "visible"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
+    t.float "maximum_price"
     t.float "minimum_price"
-    t.float "minimum_number"
-    t.integer "operation_type_id"
-    t.integer "description_template_id"
+    t.bigint "operation_type_id", null: false
+    t.bigint "description_template_id"
+    t.index ["description_template_id"], name: "index_orders_on_description_template_id"
+    t.index ["operation_type_id"], name: "index_orders_on_operation_type_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -106,5 +123,8 @@ ActiveRecord::Schema.define(version: 2022_01_15_231941) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
+  add_foreign_key "bank_accounts", "users"
+  add_foreign_key "orders", "description_templates"
+  add_foreign_key "orders", "operation_types"
   add_foreign_key "orders", "users"
 end
