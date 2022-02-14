@@ -12,6 +12,7 @@ class User < ApplicationRecord
   rolify :role_cname => 'Customer'
   validates :email, presence: true, email: true
   has_many :orders
+  has_many :bank_accounts
 
   include Devise::JWT::RevocationStrategies::JTIMatcher
 

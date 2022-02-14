@@ -14,7 +14,7 @@ class Api::V1::OrdersController < ApplicationController
   # GET /order/1.json
   def show
     if @order
-      render json: @order
+      render json: @order, include: [:user=>{:include=>:bank_accounts}]
     else
       render json: @order.errors
     end

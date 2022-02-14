@@ -2,10 +2,5 @@
 
 one:
   user_id: 1
-  name: MyString
-  description: MyText
-
-two:
-  user_id: 1
-  name: MyString
-  description: MyText
+  name: 'Paypal'
+  description: 'max@max.com'
